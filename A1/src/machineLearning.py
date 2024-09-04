@@ -96,11 +96,10 @@ class Perception():
         loss_list = []
         accuracy_list = []
 
-
         for epoch in range(epochs): 
             self.forward_pass(x)
             self.backward_pass(x, y)
-            print(f'Epoch: {epoch} \n Loss: {self.loss(y)}')
+            # print(f'Epoch: {epoch} \n Loss: {self.loss(y)}')
             #print(np.min(self.y_hat), np.max(self.y_hat))
             
             loss_list.append(self.loss(y))
@@ -108,7 +107,7 @@ class Perception():
 
             if epoch % 10 == 0: 
                 print(f'Accuracy: {self.predict(y)}')
-            print(f'Accuracy: {self.predict(y)}')
+            # print(f'Accuracy: {self.predict(y)}')
 
 
         # Plot 
