@@ -8,8 +8,8 @@ class MachineLearning():
 
 
 class Perception(): 
-    def __init__(self): 
-        self.weight = np.random.rand(2,1)   
+    def __init__(self, input_dim=2): 
+        self.weight = np.random.rand(input_dim,1)   
         self.bias = np.random.rand(1)
         self.y_hat = None
         self.r = 0.00001                           # learning rate 
@@ -36,9 +36,7 @@ class Perception():
         
         x = np.array(x)                                                           # Convert input to numpy array
         self.y_hat = self.sigmoid_function(self.weight.T @ x + self.bias)         # @ = dot product
-        # print(f"y_hat shape: {self.y_hat.shape} \n\n ")
-        # print(f'y hat: {self.y_hat}')
-        # return self.y_hat
+
 
     def loss (self, y):
         '''
@@ -53,22 +51,49 @@ class Perception():
 
 
     def backward_pass(self, x, y):
-        # backward pass oppdaterer vekten i vektmatrisen for å minnimere loss
-        # derivere loss med hensyn på vektene (w) 
-
+        '''
+        ## Update the weight and bias of the perceptron
+        ### Parameters:
+        - x : np.array 
+        - y : np.array 
+        '''
         # Calculate the derivative of the loss function
         d_loss = x @ (self.y_hat - y).T 
         
-        
         # Calculate the new weight
         dw = - np.array(self.r * d_loss, dtype=float)
-        db = -np.array((self.y_hat-y), dtype=float)
+        db = -np.array(self.r*(self.y_hat-y), dtype=float)
         self.weight += dw 
         self.bias += np.sum(db)
 
-    def train(self, x, y, epochs): 
 
-        # TODO: shuffle shit 
+    def predict(self, y):
+        '''
+        ## Predict the accuracy of the perceptron
+        ### Parameters:
+        -  y : np.array \\
+            The true label of sample x (0,1)
+        '''
+        self.y_hat = np.round(self.y_hat)
+        accuracy = np.sum(self.y_hat.reshape(y.shape) == y) / len(y)
+
+        return accuracy
+    
+
+    def train(self, x, y, epochs): 
+        '''
+        ## Train the perceptron
+        ### Parameters:
+        - x : np.array \\
+            The input data of shape (n, m), where n is the number of features and m is the number of samples.
+        - y : np.array \\
+            The true label of sample x (0,1)
+        - epochs : int \\
+            The number of epochs to train the perceptron
+        '''
+        # list for loss and accuracy 
+        loss_list = []
+        accuracy_list = []
 
 
         for epoch in range(epochs): 
@@ -77,18 +102,35 @@ class Perception():
             print(f'Epoch: {epoch} \n Loss: {self.loss(y)}')
             #print(np.min(self.y_hat), np.max(self.y_hat))
             
+            loss_list.append(self.loss(y))
+            accuracy_list.append(self.predict(y))
+
             if epoch % 10 == 0: 
                 print(f'Accuracy: {self.predict(y)}')
             print(f'Accuracy: {self.predict(y)}')
+
+
+        # Plot 
+        plt.suptitle('Loss vs accuracy')
+        plt.subplot(1,2,1)
+        plt.plot(accuracy_list)
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.title('Accuracy')
+
+        plt.subplot(1,2,2) 
+        plt.plot(loss_list)
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.title('Loss')
+        plt.show()
+
             
 
-    def predict(self, y):
-        # sammelikne yhat og y 
-        self.y_hat = np.round(self.y_hat)
-        accuracy = np.sum(self.y_hat.reshape(y.shape) == y) / len(y)
+        
 
-        return accuracy
-    
+
+  
 
 
         
