@@ -3,10 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import os
-from plot import Plots
 
 
-class DataProcessing(Plots): 
+class DataProcessing(): 
     """ 
     A class to handle data loading, preprocessing, and basic analysis for the Spotify dataset.
     """
