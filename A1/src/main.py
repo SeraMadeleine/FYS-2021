@@ -11,7 +11,8 @@ if __name__ == "__main__":
 
 
     model = Perception() 
-    model.train(np.array(X_train).T, np.array(y_train).T, 1000)
-    acc = model.predict(y_train)
+    model.train(np.array(X_train).T, np.array(y_train).T, 500)
+    accuracy = model.predict(y_train)
+
 
 

@@ -12,7 +12,7 @@ class Perception():
         self.weight = np.random.rand(input_dim,1)   
         self.bias = np.random.rand(1)
         self.y_hat = None
-        self.r = 0.00001                           # learning rate 
+        self.r = 1e-6                      # learning rate 
 
     def sigmoid_function(self, x):
         '''
@@ -74,11 +74,12 @@ class Perception():
         -  y : np.array \\
             The true label of sample x (0,1)
         '''
-        self.y_hat = np.round(self.y_hat)
+        self.y_hat = np.round(self.y_hat)          # round so we only work with 0 and 1 values 
         accuracy = np.sum(self.y_hat.reshape(y.shape) == y) / len(y)
 
         return accuracy
     
+
 
     def train(self, x, y, epochs): 
         '''
