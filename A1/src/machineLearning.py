@@ -1,6 +1,9 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
 
 class MachineLearning(): 
     def __init__(self):
@@ -111,19 +114,28 @@ class Perceptron():
         return loss_list, accuracy_list
 
 
-    def confusion_matrix(self, y): 
+    def confusion_matrix(self, y):
         '''
-        3a
+        Calculate the confusion matrix for the given predictions and true labels.
 
-        # TP - true positive 
-        # FP - fa1lse positive
-        # TN - true negative
-        # FN - false negative
-        
+        Parameters:
+        - y : np.array
+            True labels of the samples (0, 1).
+
+        Returns:
+        - confusion_matrix : np.array
+            A 2x2 matrix with [TN, FP; FN, TP].
+
         '''
+        # Initialize counts for the confusion matrix
         TP, FP, TN, FN = 0, 0, 0, 0
 
-        for i in range(len(y)): 
+        # Convert y and y_hat to flat numpy arrays if they're not already
+        y = np.array(y).flatten()
+        self.y_hat = self.y_hat.flatten()
+
+        # Calculate TP, FP, TN, FN
+        for i in range(len(self.y_hat)): 
             if y[i] == 1 and self.y_hat[i] == 1: 
                 TP += 1
             elif y[i] == 0 and self.y_hat[i] == 1: 
@@ -132,14 +144,9 @@ class Perceptron():
                 TN += 1
             elif y[i] == 1 and self.y_hat[i] == 0: 
                 FN += 1
+
+        # Create the confusion matrix
+        confusion_matrix = np.array([[TN, FP], [FN, TP]])
         
-        print(f'TP: {TP}, FP: {FP}, TN: {TN}, FN: {FN}')
-            
-
-        
-
-
-  
-
-
-        
+        return confusion_matrix
+    

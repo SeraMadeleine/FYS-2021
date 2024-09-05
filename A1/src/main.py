@@ -41,12 +41,16 @@ if __name__ == "__main__":
     # Plot decision boundaries for the the complete data set, and the training and test data
     plot.plot_decision_boundary(model, preprocessing)
     plot.subplots(X_train, y_train, X_test, y_test, model)
-
  
 
+    
+
+    # Calculate and print the confusion matrix
+
+    # TODO: feil type
+    conf_matrix = model.confusion_matrix(y_test)
+    print(conf_matrix)
+    plot.plot_confusion_matrix(conf_matrix)
 
 
-
-    # confusion matrix
-    # model.confusion_matrix(y_test)
-
+    
