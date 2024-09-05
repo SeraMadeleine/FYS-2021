@@ -2,13 +2,17 @@ from preprocessing import DataProcessing
 from machineLearning import Perceptron
 import numpy as np
 import matplotlib.pyplot as plt
+from plot import Plots
 
 if __name__ == "__main__":
     filepath = "../data/SpotifyFeatures.csv"
 
+    plot = Plots()
+
     preprocessing = DataProcessing(filepath)
     X_train, X_test, y_train, y_test = preprocessing.split_data(0.2, 42)
-    # preprocessing.plot_data('Liveness vs Loudness by Genre')
+    plot.scatter_plot('Liveness vs Loudness by Genre', preprocessing.data)
+    plt.show()
     
     
     # Shuffle the dataset 
@@ -40,13 +44,14 @@ if __name__ == "__main__":
     print("model.bias[0]: ",model.bias[0])
     print("model.weight[1]: ",model.weight[1])
     print("model.weight[0,0]: ",model.weight[0,0])
-    preprocessing.plot_data('Liveness vs Loudness by Genre')
+    plot.scatter_plot('Liveness vs Loudness with Decision Boundary', preprocessing.data, save_plot=False)
     
     # 2c 
     # [0,-model.bias[0]/model.weight[1,0]] er punktet der linjen krysser hver akse 
     plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
     plt.xlim(0,1)
     plt.ylim(-60,5)
+    plot.save_plot('Liveness vs Loudness with Decision Boundary')
     plt.show()
 
 
@@ -64,6 +69,7 @@ if __name__ == "__main__":
     plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
     plt.xlim(0,1)
     plt.ylim(-60,5)
+    plot.save_plot('Training and Test Data with Decision Boundary')
     plt.show()
 
 
