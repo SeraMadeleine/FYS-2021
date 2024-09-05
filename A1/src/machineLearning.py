@@ -1,5 +1,4 @@
 import numpy as np 
-import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
@@ -44,7 +43,7 @@ class Perceptron():
         ## cross-entropy loss function
 
         ### Parameters:
-        - y : float \\
+        - y : float 
             The true label of sample x (0,1)
         '''
         return -np.mean(y * np.log(self.y_hat) + (1 - y) * np.log(1 - self.y_hat))
@@ -98,7 +97,6 @@ class Perceptron():
         accuracy_list = []
 
         for epoch in range(epochs): 
-
             for i in tqdm(range(len(y))):
                 self.forward_pass(x)
                 self.backward_pass(x, y)
@@ -110,21 +108,8 @@ class Perceptron():
                 loss_list.append(current_loss)
                 accuracy_list.append(current_accuracy) 
 
+        return loss_list, accuracy_list
 
-        # Plot 
-        plt.suptitle('Loss vs accuracy')
-        plt.subplot(1,2,1)
-        plt.plot(accuracy_list)
-        plt.xlabel('Epoch')
-        plt.ylabel('Accuracy')
-        plt.title('Accuracy')
-
-        plt.subplot(1,2,2) 
-        plt.plot(loss_list)
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.title('Loss')
-        plt.show()
 
     def confusion_matrix(self, y): 
         '''
