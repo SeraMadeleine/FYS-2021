@@ -7,13 +7,13 @@ class MachineLearning():
         pass
 
 
-class Perception(): 
+class Perceptron(): 
     def __init__(self, input_dim=2): 
         self.weight = np.random.rand(input_dim,1)   
         self.bias = np.random.rand(1)
         self.y_hat = None
-        self.r = 1e-6                      # learning rate 
-
+        self.learning_rate  = 1e-6                     
+        
     def sigmoid_function(self, x):
         '''
         ## Sigmoid function
@@ -46,8 +46,8 @@ class Perception():
         - y : float \\
             The true label of sample x (0,1)
         '''
-
-        return np.sum((y - self.y_hat)**2)/len(y)
+        return -np.mean(y * np.log(self.y_hat) + (1 - y) * np.log(1 - self.y_hat))
+        # return np.sum((y - self.y_hat)**2)/len(y)
 
 
     def backward_pass(self, x, y):
@@ -61,8 +61,8 @@ class Perception():
         d_loss = x @ (self.y_hat - y).T 
         
         # Calculate the new weight
-        dw = - np.array(self.r * d_loss, dtype=float)
-        db = -np.array(self.r*(self.y_hat-y), dtype=float)
+        dw = - np.array(self.learning_rate  * d_loss, dtype=float)
+        db = -np.array(self.learning_rate *(self.y_hat-y), dtype=float)
         self.weight += dw 
         self.bias += np.sum(db)
 
@@ -96,18 +96,20 @@ class Perception():
         loss_list = []
         accuracy_list = []
 
-        for epoch in range(epochs): 
-            self.forward_pass(x)
-            self.backward_pass(x, y)
-            # print(f'Epoch: {epoch} \n Loss: {self.loss(y)}')
-            #print(np.min(self.y_hat), np.max(self.y_hat))
-            
-            loss_list.append(self.loss(y))
-            accuracy_list.append(self.predict(y))
+        #TODO: ta de inn en etter en 
 
-            if epoch % 10 == 0: 
-                print(f'Accuracy: {self.predict(y)}')
-            # print(f'Accuracy: {self.predict(y)}')
+        for epoch in range(epochs): 
+
+            y_pred = self.forward_pass(x)
+            self.backward_pass(x, y)
+            current_loss = self.loss(y)
+            current_accuracy = self.predict(y)
+
+            loss_list.append(current_loss)
+            accuracy_list.append(current_accuracy) 
+
+            if epoch % 100 == 0: 
+                print(f'Epoch {epoch}: Loss {current_loss:.4f}, Accuracy {current_accuracy:.4f}')
 
 
         # Plot 
