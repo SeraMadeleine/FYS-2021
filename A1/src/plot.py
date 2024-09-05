@@ -76,25 +76,25 @@ class Plots():
         self.save_plot('Liveness vs Loudness with Decision Boundary')
         plt.show()
 
+
     def subplots(self, X_train, y_train, X_test, y_test, model, plot_title='Training and Test Data with Decision Boundary'):
+        # plot test og training scatter ved siden av hverandre med linje 
         plt.suptitle(plot_title)
-
         plt.subplot(1,2, 1)
-        # plt.scatter(pop_data['liveness'], pop_data['loudness'], color=self.color_pop, edgecolor='black', label='Pop', alpha=0.3, s=50)
-
-        plt.scatter(X_train['liveness'], X_train['loudness'],  color=self.color_pop, edgecolor='black', label='Pop', alpha=0.3, s=50)
+        plt.scatter(X_train['liveness'], X_train['loudness'], c=y_train, cmap='coolwarm')
         plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
         plt.xlim(0,1)
         plt.ylim(-60,5)
         plt.title('Training Data')
 
+
         plt.subplot(1,2, 2)
-        plt.scatter(X_test['liveness'], X_test['loudness'], color=self.color_classical, edgecolor='black', label='Classical', alpha=0.3, s=50)
+        plt.scatter(X_test['liveness'], X_test['loudness'], c=y_test, cmap='coolwarm')
         plt.title('Test Data')
         plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
         plt.xlim(0,1)
         plt.ylim(-60,5)
-
+        
         self.save_plot(plot_title)
         plt.show()
 
@@ -128,7 +128,7 @@ class Plots():
             A 2x2 matrix with [TN, FP; FN, TP].
         '''
         plt.figure(figsize=(6,4))
-        sns.heatmap(confusion_matrix, annot=True, fmt='d', cmap='magma', cbar=False,
+        sns.heatmap(confusion_matrix, annot=True, fmt='d', cmap='BuPu', cbar=False,
             xticklabels=['Predicted 0', 'Predicted 1'], 
             yticklabels=['Actual 0', 'Actual 1'])
 
