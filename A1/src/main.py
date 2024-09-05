@@ -45,11 +45,8 @@ if __name__ == "__main__":
 
     
 
-    # Calculate and print the confusion matrix
-
-    # TODO: feil type
+    # Calculate and plot the confusion matrix
     conf_matrix = model.confusion_matrix(y_test)
-    print(conf_matrix)
     plot.plot_confusion_matrix(conf_matrix)
 
 

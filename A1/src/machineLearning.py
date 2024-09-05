@@ -150,3 +150,9 @@ class Perceptron():
         
         return confusion_matrix
     
+    def find_difficult_songs(X_test, y_test, y_hat):        
+        """
+        """
+        pass 
+
+
