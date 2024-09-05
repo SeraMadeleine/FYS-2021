@@ -28,8 +28,10 @@ class Plots():
         plt.grid(True)  
 
         # Save the plot
-        if save_plot: 
+        if save_plot == True: 
             self.save_plot(plot_title)
+        
+            plt.show()
 
     def save_plot(self, plot_title, plot_directory="../plots"):
         """ 
@@ -54,6 +56,55 @@ class Plots():
 
     def plot_data(self):
         pass
+        
 
-    def subplots(self):
-        pass
+    # 2c
+    def plot_decision_boundary(self, model, preprocessing):
+        self.scatter_plot('Liveness vs Loudness with Decision Boundary', preprocessing.data, save_plot=False)
+    
+        # [0,-model.bias[0]/model.weight[1,0]] er punktet der linjen krysser hver akse 
+        plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
+        plt.xlim(0,1)
+        plt.ylim(-60,5)
+
+        self.save_plot('Liveness vs Loudness with Decision Boundary')
+        plt.show()
+
+    def subplots(self, X_train, y_train, X_test, y_test, model, plot_title='Training and Test Data with Decision Boundary'):
+        # plot test og training scatter ved siden av hverandre med linje 
+        plt.suptitle(plot_title)
+
+        plt.subplot(1,2, 1)
+        plt.scatter(X_train['liveness'], X_train['loudness'], c=y_train, cmap='coolwarm')
+        plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
+        plt.xlim(0,1)
+        plt.ylim(-60,5)
+        plt.title('Training Data')
+
+        plt.subplot(1,2, 2)
+        plt.scatter(X_test['liveness'], X_test['loudness'], c=y_test, cmap='coolwarm')
+        plt.title('Test Data')
+        plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
+        plt.xlim(0,1)
+        plt.ylim(-60,5)
+
+        self.save_plot(plot_title)
+        plt.show()
+
+    def plot_loss_vs_accuracy(self, accuracy_list, loss_list):
+         # Plot 
+        plt.suptitle('Loss vs accuracy')
+        plt.subplot(1,2,1)
+        plt.plot(accuracy_list)
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.title('Accuracy')
+
+        plt.subplot(1,2,2) 
+        plt.plot(loss_list)
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.title('Loss')
+
+        self.save_plot('Loss vs accuracy')
+        plt.show()
