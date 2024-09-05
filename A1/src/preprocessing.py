@@ -76,7 +76,7 @@ class DataProcessing():
 
         features = self.data[['liveness', 'loudness']]
         labels = self.data['genre']
-        X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=test_size, random_state=random_state, stratify=labels)
+        X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=test_size, random_state=random_state, stratify=labels, shuffle=True)
         print(f"Training set size: {len(X_train)}, Testing set size: {len(X_test)}")
         return X_train, X_test, y_train, y_test
     
@@ -130,7 +130,6 @@ class DataProcessing():
         # Save the plot
         self.save_plot(plot_title)
 
-        plt.show()
 
 
 

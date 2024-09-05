@@ -1,6 +1,7 @@
 import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 class MachineLearning(): 
     def __init__(self):
@@ -40,7 +41,7 @@ class Perceptron():
 
     def loss (self, y):
         '''
-        ## MSE - mean squared error
+        ## cross-entropy loss function
 
         ### Parameters:
         - y : float \\
@@ -96,20 +97,18 @@ class Perceptron():
         loss_list = []
         accuracy_list = []
 
-        #TODO: ta de inn en etter en 
-
         for epoch in range(epochs): 
 
-            y_pred = self.forward_pass(x)
-            self.backward_pass(x, y)
-            current_loss = self.loss(y)
-            current_accuracy = self.predict(y)
+            for i in tqdm(range(len(y))):
+                self.forward_pass(x)
+                self.backward_pass(x, y)
+                current_loss = self.loss(y)
+                current_accuracy = self.predict(y)
+                if i % 500 == 0: 
+                    print(f'Epoch {epoch}: Loss {current_loss:.4f}, Accuracy {current_accuracy:.4f}')
 
-            loss_list.append(current_loss)
-            accuracy_list.append(current_accuracy) 
-
-            if epoch % 100 == 0: 
-                print(f'Epoch {epoch}: Loss {current_loss:.4f}, Accuracy {current_accuracy:.4f}')
+                loss_list.append(current_loss)
+                accuracy_list.append(current_accuracy) 
 
 
         # Plot 
@@ -127,6 +126,29 @@ class Perceptron():
         plt.title('Loss')
         plt.show()
 
+    def confusion_matrix(self, y): 
+        '''
+        3a
+
+        # TP - true positive 
+        # FP - fa1lse positive
+        # TN - true negative
+        # FN - false negative
+        
+        '''
+        TP, FP, TN, FN = 0, 0, 0, 0
+
+        for i in range(len(y)): 
+            if y[i] == 1 and self.y_hat[i] == 1: 
+                TP += 1
+            elif y[i] == 0 and self.y_hat[i] == 1: 
+                FP += 1
+            elif y[i] == 0 and self.y_hat[i] == 0: 
+                TN += 1
+            elif y[i] == 1 and self.y_hat[i] == 0: 
+                FN += 1
+        
+        print(f'TP: {TP}, FP: {FP}, TN: {TN}, FN: {FN}')
             
 
         
