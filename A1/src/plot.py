@@ -1,11 +1,13 @@
 import os
 import matplotlib.pyplot as plt
-
+import numpy as np
+import seaborn as sns
 
 class Plots(): 
     def __init__(self):
         self.data = None
-        pass
+        self.plot_directory="../plots"
+
 
     def scatter_plot(self, plot_title, data, save_plot=True):
         """
@@ -33,7 +35,7 @@ class Plots():
         
             plt.show()
 
-    def save_plot(self, plot_title, plot_directory="../plots"):
+    def save_plot(self, plot_title):
         """ 
         Save the plot in the plots directory with the name of the plot 
 
@@ -47,11 +49,11 @@ class Plots():
         plot_filename = f"{plot_title.replace(' ', '_').lower()}.png"
 
         # Create the directory if it doesn't exist 
-        if not os.path.exists(plot_directory):
-            os.makedirs(plot_directory)
+        if not os.path.exists(self.plot_directory):
+            os.makedirs(self.plot_directory)
 
-        plt.savefig(os.path.join(plot_directory, plot_filename))
-        print(f"Plot saved to {plot_directory}/{plot_filename}")
+        plt.savefig(os.path.join(self.plot_directory, plot_filename))
+        print(f"Plot saved to {self.plot_directory}/{plot_filename}")
 
 
     def plot_data(self):
@@ -91,6 +93,7 @@ class Plots():
         self.save_plot(plot_title)
         plt.show()
 
+
     def plot_loss_vs_accuracy(self, accuracy_list, loss_list):
          # Plot 
         plt.suptitle('Loss vs accuracy')
@@ -107,4 +110,24 @@ class Plots():
         plt.title('Loss')
 
         self.save_plot('Loss vs accuracy')
+        plt.show()
+
+    
+
+    def plot_confusion_matrix(self, confusion_matrix):
+        '''
+        Plot the confusion matrix using seaborn's heatmap.
+
+        Parameters:
+        - confusion_matrix : np.array
+            A 2x2 matrix with [TN, FP; FN, TP].
+        '''
+        plt.figure(figsize=(6,4))
+        sns.heatmap(confusion_matrix, annot=True, fmt='d', cmap='Blues', cbar=False,
+                    xticklabels=['Predicted 0', 'Predicted 1'], 
+                    yticklabels=['Actual 0', 'Actual 1'])
+
+        plt.xlabel('Predicted')
+        plt.ylabel('Actual')
+        plt.title('Confusion Matrix')
         plt.show()
