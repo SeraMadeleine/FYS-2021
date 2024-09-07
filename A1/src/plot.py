@@ -8,7 +8,6 @@ class Plots():
         self.data = None
         self.plot_directory="../plots"
 
-
         # Define the colors for the plots
         self.color_pop = 'purple'           # Color for Pop data points
         self.color_classical = 'pink'       # Color for Classical data points
@@ -94,7 +93,7 @@ class Plots():
         plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
         plt.xlim(0,1)
         plt.ylim(-60,5)
-        
+
         self.save_plot(plot_title)
         plt.show()
 
@@ -104,13 +103,13 @@ class Plots():
         plt.suptitle('Loss vs accuracy')
         plt.subplot(1,2,1)
         plt.plot(accuracy_list, color=self.color_accuracy)
-        plt.xlabel('Epoch')
+        plt.xlabel('optimization steps')
         plt.ylabel('Accuracy')
         plt.title('Accuracy')
 
         plt.subplot(1,2,2) 
         plt.plot(loss_list, color=self.color_loss)
-        plt.xlabel('Epoch')
+        plt.xlabel('optimization steps')
         plt.ylabel('Loss')
         plt.title('Loss')
 
@@ -136,4 +135,5 @@ class Plots():
         plt.xlabel('Predicted')
         plt.ylabel('Actual')
         plt.title('Confusion Matrix')
+        self.save_plot('Confusion Matrix')
         plt.show()

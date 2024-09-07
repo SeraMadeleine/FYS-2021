@@ -4,7 +4,7 @@ import numpy as np
 from plot import Plots
 
 if __name__ == "__main__":
-
+    # ------- Problem 1 -------
     # The filepath to the dataset
     filepath = "../data/SpotifyFeatures.csv"
 
@@ -18,6 +18,9 @@ if __name__ == "__main__":
     # Generate the initial scatter plot
     plot.scatter_plot('Liveness vs Loudness by Genre', preprocessing.data)
         
+    
+    # ------- Problem 2 -------
+    
     # Shuffle the dataset 
     indices = np.arange(X_train.shape[0])
     np.random.shuffle(indices)
@@ -26,10 +29,11 @@ if __name__ == "__main__":
 
     # Train the model on the training data 
     model = Perceptron() 
-    loss_list, accuracy_list = model.train(np.array(X_train).T, np.array(y_train).T, 1)
+    loss_list, accuracy_list = model.train(np.array(X_train).T, np.array(y_train).T, 20)
     plot.plot_loss_vs_accuracy(accuracy_list, loss_list)
     
 
+    # ------- Problem 3 -------
     # Evaluate the model 
     accuracy_train = model.predict(y_train)
     print(f'Train Accuracy: {accuracy_train:.4f}')
@@ -41,8 +45,6 @@ if __name__ == "__main__":
     # Plot decision boundaries for the the complete data set, and the training and test data
     plot.plot_decision_boundary(model, preprocessing)
     plot.subplots(X_train, y_train, X_test, y_test, model)
- 
-
     
 
     # Calculate and plot the confusion matrix

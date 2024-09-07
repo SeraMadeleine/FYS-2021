@@ -55,6 +55,14 @@ class DataProcessing():
         self.data.loc[self.data["genre"] == "Classical", "genre"] = 0
         print(f'Pop: {len(self.data[self.data["genre"]==1])}\nClassical: {len(self.data[self.data["genre"]==0])}')
 
+    def filter_features(self):
+        """
+        Filters the dataset to include only the relevant features.
+        """
+        
+        self.data = self.data[['liveness', 'loudness', 'genre']]
+        print("Filtered to necessary features: 'liveness', 'loudness', and 'genre'")
+
 # 1c) 
     def split_data(self, test_size, random_state):
         """
@@ -77,13 +85,6 @@ class DataProcessing():
         print(f"Training set size: {len(X_train)}, Testing set size: {len(X_test)}")
         return X_train, X_test, y_train, y_test
     
-    def filter_features(self):
-        """
-        Filters the dataset to include only the relevant features.
-        """
-        
-        self.data = self.data[['liveness', 'loudness', 'genre']]
-        print("Filtered to necessary features: 'liveness', 'loudness', and 'genre'")
 
 
 

@@ -4,18 +4,13 @@ from tqdm import tqdm
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 
-
-class MachineLearning(): 
-    def __init__(self):
-        pass
-
-
 class Perceptron(): 
     def __init__(self, input_dim=2): 
         self.weight = np.random.rand(input_dim,1)   
         self.bias = np.random.rand(1)
         self.y_hat = None
-        self.learning_rate  = 1e-6                     
+        self.learning_rate  = 5e-5                     
+        
         
     def sigmoid_function(self, x):
         '''
@@ -60,8 +55,14 @@ class Perceptron():
         - x : np.array 
         - y : np.array 
         '''
+
+        y = np.array(y).reshape(1,1)
+        x=x.reshape(2,1)
+
+        self.y_hat = self.y_hat.reshape(1,1)
+        
         # Calculate the derivative of the loss function
-        d_loss = x @ (self.y_hat - y).T 
+        d_loss = x @ (self.y_hat - y)
         
         # Calculate the new weight
         dw = - np.array(self.learning_rate  * d_loss, dtype=float)
@@ -101,15 +102,15 @@ class Perceptron():
 
         for epoch in range(epochs): 
             for i in tqdm(range(len(y))):
+                self.forward_pass(x[:, i])
+                self.backward_pass(x[:, i], y[i])
                 self.forward_pass(x)
-                self.backward_pass(x, y)
                 current_loss = self.loss(y)
                 current_accuracy = self.predict(y)
-                if i % 500 == 0: 
-                    print(f'Epoch {epoch}: Loss {current_loss:.4f}, Accuracy {current_accuracy:.4f}')
 
                 loss_list.append(current_loss)
                 accuracy_list.append(current_accuracy) 
+            print(f'Epoch {epoch}: Loss {current_loss:.4f}, Accuracy {current_accuracy:.4f}')
 
         return loss_list, accuracy_list
 
@@ -147,6 +148,13 @@ class Perceptron():
 
         # Create the confusion matrix
         confusion_matrix = np.array([[TN, FP], [FN, TP]])
+
+        # Calculate precision and recall, and make sure we can not devide by zero
+        precision = TP / (TP + FP) if TP + FP > 0 else 0 
+        recall = TP / (TP + FN) if TP + FN > 0 else 0    
+
+        print(f'Precision: {precision:.4f}, Recall: {recall:.4f}')
+
         
         return confusion_matrix
     
