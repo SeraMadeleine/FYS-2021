@@ -22,11 +22,6 @@ if __name__ == "__main__":
     # ------- Problem 2 -------
     
     # Shuffle the dataset 
-    indices = np.arange(X_train.shape[0])
-    np.random.shuffle(indices)
-    X_train = X_train.iloc[indices]
-    y_train = y_train.iloc[indices]
-
     # Train the model on the training data 
     model = Perceptron() 
     loss_list, accuracy_list = model.train(np.array(X_train).T, np.array(y_train).T, 20)
