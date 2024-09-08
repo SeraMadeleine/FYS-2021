@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 
 class DataProcessing(): 
     """ 
-    A class to handle data loading, preprocessing, and basic analysis for the Spotify dataset.
+    A class to handle data loading, preprocessing, and basic analysis for a given dataset.
     """
 
     def __init__(self, filepath): 
@@ -23,37 +23,40 @@ class DataProcessing():
         self.load_data()
         self.process_data()
 
-# 1a) 
+
     def load_data(self):
         """ 
-        Load the data from the given filepath 
+        Load the data from the given filepath. If the data cannot be loaded, print an error message.
         """
-
         try: 
             self.data = pd.read_csv(self.filepath, delimiter=",")
             print(f'filepath: {self.filepath} \n number of samples (rows-1): {len(self.data)-1} \n number of features (columns): {len(self.data.columns)}')
         except Exception as e:
             print(f"Failed to load data from {self.filepath}, {e}")
 
-# 1b) 
+
     def process_data(self):
         """ 
-        Process the data by classifying and filtering the features 
+        Process the data by classifying and filtering the features.
         """
 
         self.classify_data()
         self.filter_features()
-# 1b)       
+
+
     def classify_data(self):
         """        
         Classifies the data into 'Pop' (1) and 'Classical' (0) genres.
         """
         
+        # Filter the data to include only 'Pop' and 'Classical' genres
         self.data = self.data[self.data["genre"].isin(["Pop", "Classical"])]
        
+        # Classify the genres as 'Pop' (1) and 'Classical' (0), and print the number of samples in each class
         self.data.loc[self.data["genre"] == "Pop", "genre"] = 1
         self.data.loc[self.data["genre"] == "Classical", "genre"] = 0
         print(f'Pop: {len(self.data[self.data["genre"]==1])}\nClassical: {len(self.data[self.data["genre"]==0])}')
+
 
     def filter_features(self):
         """
@@ -63,7 +66,7 @@ class DataProcessing():
         self.data = self.data[['liveness', 'loudness', 'genre']]
         print("Filtered to necessary features: 'liveness', 'loudness', and 'genre'")
 
-# 1c) 
+
     def split_data(self, test_size, random_state):
         """
         Splits the data into training and testing sets.

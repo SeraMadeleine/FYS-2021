@@ -25,10 +25,13 @@ class Plots():
         """
         self.data = data
 
+        # Create the scatter plot 
         pop_data = self.data[self.data['genre'] == 1]
         classical_data = self.data[self.data['genre'] == 0]
         plt.scatter(pop_data['liveness'], pop_data['loudness'], color=self.color_pop, edgecolor='black', label='Pop', alpha=0.3, s=50)
         plt.scatter(classical_data['liveness'], classical_data['loudness'], color=self.color_classical, edgecolor='black', label='Classical', alpha=0.3, s=50)
+
+        # Add labels, grid, and title 
         plt.title(plot_title, fontsize=15)
         plt.xlabel('Liveness', fontsize=12)
         plt.ylabel('Loudness', fontsize=12)
@@ -51,24 +54,34 @@ class Plots():
         - plot_directory : str, optional \\
             The directory where the plot will be saved (default is "../plots").
         """ 
-        
+        # Replace spaces with underscores and convert to lowercase for the filename
         plot_filename = f"{plot_title.replace(' ', '_').lower()}.png"
 
         # Create the directory if it doesn't exist 
         if not os.path.exists(self.plot_directory):
             os.makedirs(self.plot_directory)
 
+        # Save the plot and print the path 
         plt.savefig(os.path.join(self.plot_directory, plot_filename))
         print(f"Plot saved to {self.plot_directory}/{plot_filename}")
 
 
-
-    # 2c
     def plot_decision_boundary(self, model, preprocessing):
+        """ 
+        Plot the decision boundary of the model on the data.
+
+        ### Parameters:
+        - model : Perceptron \\
+            The trained perceptron model.
+        - preprocessing : DataProcessing \\
+            The data processing object with the preprocessed data.
+        """
         self.scatter_plot('Liveness vs Loudness with Decision Boundary', preprocessing.data, save_plot=False)
-    
-        # [0,-model.bias[0]/model.weight[1,0]] er punktet der linjen krysser hver akse 
+
+        # plot decision boundary with a line that separates the two classes
         plt.axline(xy1=[0,-model.bias[0]/model.weight[1,0]], xy2=[-model.bias[0]/model.weight[0,0],0], color='black')
+
+        # Set the limits of the plot  
         plt.xlim(0,1)
         plt.ylim(-60,5)
 
@@ -77,7 +90,23 @@ class Plots():
 
 
     def subplots(self, X_train, y_train, X_test, y_test, model, plot_title='Training and Test Data with Decision Boundary'):
-        # plot test og training scatter ved siden av hverandre med linje 
+        """
+        Create a subplot with the training and test data, and the decision boundary. 
+
+        ### Parameters:
+        - X_train : pd.DataFrame \\
+            The training features.
+        - y_train : pd.Series \\
+            The training labels.
+        - X_test : pd.DataFrame \\
+            The test features.
+        - y_test : pd.Series \\
+            The test labels.
+        - model : Perceptron \\
+            The trained perceptron model.
+        - plot_title : str, optional \\
+            The title of the plot (default is 'Training and Test Data with Decision Boundary').
+        """
         plt.suptitle(plot_title)
         plt.subplot(1,2, 1)
         plt.scatter(X_train['liveness'], X_train['loudness'], c=y_train, cmap='coolwarm')
@@ -99,7 +128,15 @@ class Plots():
 
 
     def plot_loss_vs_accuracy(self, accuracy_list, loss_list):
-         # Plot 
+        """
+        A plot to see the loss and accuracy of the model over time. 
+
+        ### Parameters:
+        - accuracy_list : list \\
+            A list of accuracies over the optimization steps.
+        - loss_list : list \\
+            A list of losses over the optimization steps.
+        """
         plt.suptitle('Loss vs accuracy')
         plt.subplot(1,2,1)
         plt.plot(accuracy_list, color=self.color_accuracy)

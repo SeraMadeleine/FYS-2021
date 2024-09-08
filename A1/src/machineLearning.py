@@ -78,11 +78,10 @@ class Perceptron():
         -  y : np.array \\
             The true label of sample x (0,1)
         '''
-        self.y_hat = np.round(self.y_hat)          # round so we only work with 0 and 1 values 
+        self.y_hat = np.round(self.y_hat)                               # round so we only work with 0 and 1 values 
         accuracy = np.sum(self.y_hat.reshape(y.shape) == y) / len(y)
 
         return accuracy
-    
 
 
     def train(self, x, y, epochs): 
@@ -100,7 +99,10 @@ class Perceptron():
         loss_list = []
         accuracy_list = []
 
+        # Run the training loop for the given number of epochs 
         for epoch in range(epochs): 
+
+            # Do a forward and backward pass for each sample in the dataset, and add the loss and accuracy to a list for plotting.
             for i in tqdm(range(len(y))):
                 self.forward_pass(x[:, i])
                 self.backward_pass(x[:, i], y[i])
@@ -154,13 +156,7 @@ class Perceptron():
         recall = TP / (TP + FN) if TP + FN > 0 else 0    
 
         print(f'Precision: {precision:.4f}, Recall: {recall:.4f}')
-
-        
         return confusion_matrix
     
-    def find_difficult_songs(X_test, y_test, y_hat):        
-        """
-        """
-        pass 
 
 
