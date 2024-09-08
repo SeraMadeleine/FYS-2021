@@ -31,12 +31,12 @@ This is the first mandatory assignment in Machine Learning (FYS-2021) at UiT for
    - Ensure Python 3.x is installed on your system.
    - Install required Python libraries (pandas, matplotlib, and numpy) by running:
      ```bash
-     pip install -r requirements.txt
+     pip3 install -r requirements.txt
      ```
 
 2. **Running the Code**
    - Navigate to the `src` directory in the terminal.
    - Execute the following command:
      ```bash
-     python main.py
+     python3 main.py
      ```
